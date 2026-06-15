@@ -18,8 +18,12 @@ import os
 #=================================================
 # CONFIGURACIÓN
 #=================================================
+st.write(os.listdir("."))
 
 PDF_ORIGINAL = "Calificaciones.pdf"
+
+st.write("Existe?:", os.path.exists(PDF_ORIGINAL))
+
 
 st.set_page_config(
     page_title="Firma de conformidad",
