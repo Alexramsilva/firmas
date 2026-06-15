@@ -1,4 +1,6 @@
 streamlit
+streamlit-drawable-canvas
+PyMuPDF
+Pillow
+numpy
 openai
-pdfplumber
-pandas
