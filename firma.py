@@ -312,36 +312,36 @@ if seleccion != "":
                 )
 
 
-"""                with open(
+#                with open(
 
-                    PDF_FIRMADO,
+#                    PDF_FIRMADO,
 
-                    "rb"
+ #                   "rb"
 
-                ) as f:
+  #              ) as f:
                     
 
-                    st.download_button(
+   #                 st.download_button(
 
-                       "⬇️ Descargar PDF actualizado",
+    #                   "⬇️ Descargar PDF actualizado",
 
-                        f,
+  #                      f,
 
-                        file_name=PDF_FIRMADO,
+   #                     file_name=PDF_FIRMADO,
 
-                        mime="application/pdf"
+    #                    mime="application/pdf"
 
-                    )
-
-
-            else:
+     #               )
 
 
-                st.error(
+      #      else:
 
-                    "No se encontró la matrícula en el PDF"
 
-                )  """"
+       #         st.error(
+
+        #            "No se encontró la matrícula en el PDF"
+
+         #       )  """"
 
 #======================================
 # DESCARGA CON CONTRASEÑA
@@ -391,6 +391,6 @@ elif clave != "":
     st.error(
 
         "❌ Contraseña incorrecta"
-
+    )
     )
 
