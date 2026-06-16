@@ -319,26 +319,71 @@ if seleccion != "":
                     "rb"
 
                 ) as f:
+#####################
+# Contraseña del profesor
+
+PASSWORD = "otromododeser"
 
 
-                    st.download_button(
+clave = st.text_input(
 
-                        "⬇️ Descargar PDF actualizado",
+    "Ingrese la contraseña para descargar el PDF",
 
-                        f,
+    type="password"
 
-                        file_name=PDF_FIRMADO,
-
-                        mime="application/pdf"
-
-                    )
+)
 
 
-            else:
+if clave == PASSWORD:
+
+    with open(
+
+        PDF_FIRMADO,
+
+        "rb"
+
+    ) as f:
 
 
-                st.error(
+        st.download_button(
 
-                    "No se encontró la matrícula en el PDF"
+            "⬇️ Descargar PDF actualizado",
+
+            f,
+
+            file_name=PDF_FIRMADO,
+
+            mime="application/pdf"
+
+        )
+
+elif clave != "":
+
+    st.error(
+
+        "Contraseña incorrecta"
+
+    )
+                    
+
+#                    st.download_button(
+
+#                       "⬇️ Descargar PDF actualizado",
+
+#                        f,
+
+#                        file_name=PDF_FIRMADO,
+
+#                        mime="application/pdf"
+
+#                    )
+
+
+#            else:
+
+
+#                st.error(
+
+#                    "No se encontró la matrícula en el PDF"
 
                 )                
