@@ -312,7 +312,7 @@ if seleccion != "":
                 )
 
 
-""""                with open(
+"""                with open(
 
                     PDF_FIRMADO,
 
@@ -341,7 +341,7 @@ if seleccion != "":
 
                     "No se encontró la matrícula en el PDF"
 
-                )  """""
+                )  """"
 
 #======================================
 # DESCARGA CON CONTRASEÑA
