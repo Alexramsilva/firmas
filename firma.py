@@ -392,5 +392,5 @@ elif clave != "":
 
         "❌ Contraseña incorrecta"
     )
-    )
+    
 
