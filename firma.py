@@ -20,9 +20,9 @@ import os
 # CONFIG
 #=================================================
 
-PDF_ORIGINAL = "Calificaciones.pdf.pdf"
+PDF_ORIGINAL = "Calificaciones.pdf"
 
-PDF_FIRMADO = "Calificaciones_Cooon_firma.pdf"
+PDF_FIRMADO = "Calificaciones_Coooon_firma.pdf"
 
 
 st.set_page_config(
