@@ -22,7 +22,7 @@ import os
 
 PDF_ORIGINAL = "Calificaciones.pdf.pdf"
 
-PDF_FIRMADO = "Calificaciones_Con_firma.pdf"
+PDF_FIRMADO = "Calificaciones_Coon_firma.pdf"
 
 
 st.set_page_config(
