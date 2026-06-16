@@ -237,7 +237,7 @@ if seleccion != "":
 
                     x1 = r.x1 + 420
 
-                    y1 = r.y0 - 9
+                    y1 = r.y0 - 5
 
                     x2 = x1 + 65
 
