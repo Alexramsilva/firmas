@@ -22,7 +22,7 @@ import os
 
 PDF_ORIGINAL = "Calificaciones.pdf.pdf"
 
-PDF_FIRMADO = "Calificaciones_Coon_firma.pdf"
+PDF_FIRMADO = "Calificaciones_Cooon_firma.pdf"
 
 
 st.set_page_config(
@@ -237,7 +237,7 @@ if seleccion != "":
 
                     x1 = r.x1 + 420
 
-                    y1 = r.y0 - 7
+                    y1 = r.y0 - 8
 
                     x2 = x1 + 70
 
