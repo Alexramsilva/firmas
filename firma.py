@@ -141,7 +141,7 @@ if seleccion != "":
 
         stroke_width=3,
 
-        stroke_color="#000000",
+        stroke_color="#0A3CAA",
 
         background_color="#FFFFFF",
 
