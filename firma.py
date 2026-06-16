@@ -15,29 +15,49 @@ import numpy as np
 import fitz
 import os
 
-#=================================================
-# CONFIGURACIÓN
-#=================================================
-st.write(os.listdir("."))
 
-PDF_ORIGINAL = "Calificaciones.pdf"
+#=================================================
+# CONFIG
+#=================================================
 
-st.write("Existe?:", os.path.exists(PDF_ORIGINAL))
+PDF_ORIGINAL = "Calificaciones.pdf.pdf"
+
+PDF_FIRMADO = "Calificaciones_Firmado.pdf"
 
 
 st.set_page_config(
+
     page_title="Firma de conformidad",
+
     layout="wide"
+
 )
+
 
 st.title("🖊️ Firma de Conformidad")
 
-st.write(
-    "Seleccione su nombre y firme en el recuadro."
-)
 
 if not os.path.exists("firmas"):
+
     os.mkdir("firmas")
+
+
+#=================================================
+# SI NO EXISTE EL PDF FIRMADO,
+# SE CREA UNA COPIA DEL ORIGINAL
+#=================================================
+
+if not os.path.exists(PDF_FIRMADO):
+
+    import shutil
+
+    shutil.copy(
+
+        PDF_ORIGINAL,
+
+        PDF_FIRMADO
+
+    )
 
 
 #=================================================
@@ -82,51 +102,6 @@ alumnos = {
 
 
 #=================================================
-# COORDENADAS DE FIRMAS
-#=================================================
-
-# x1,y1,x2,y2
-
-coordenadas = {
-
-"242013865":[465,137,560,165],
-
-"242013779":[465,154,560,182],
-
-"242014048":[465,171,560,199],
-
-"242013886":[465,188,560,216],
-
-"242014003":[465,205,560,233],
-
-"242013791":[465,222,560,250],
-
-"242017782":[465,239,560,267],
-
-"242013836":[465,256,560,284],
-
-"242013869":[465,273,560,301],
-
-"242014038":[465,290,560,318],
-
-"242013523":[465,307,560,335],
-
-"242014028":[465,324,560,352],
-
-"242013858":[465,341,560,369],
-
-"242014047":[465,358,560,386],
-
-# Página 2
-
-"242013966":[465,75,560,105],
-
-"242013827":[465,92,560,122]
-
-}
-
-
-#=================================================
 # LISTA DESPLEGABLE
 #=================================================
 
@@ -148,10 +123,6 @@ seleccion = st.selectbox(
 )
 
 
-#=================================================
-# SI ELIGE UN ALUMNO
-#=================================================
-
 if seleccion != "":
 
     matricula = opciones[seleccion]
@@ -161,6 +132,7 @@ if seleccion != "":
     st.success(nombre)
 
     st.info(f"Matrícula: {matricula}")
+
 
     st.subheader("Firme en el recuadro")
 
@@ -202,106 +174,171 @@ if seleccion != "":
             archivo_png = f"firmas/{matricula}.png"
 
 
-            img.save(archivo_png)
+            img.save(
 
-
-            st.success("Firma guardada.")
-
-
-            #=====================================
-            # ABRIR PDF
-            #=====================================
-
-            pdf = fitz.open(PDF_ORIGINAL)
-
-
-            # Página
-
-            pagina_pdf = 0
-
-
-            if matricula in [
-
-                "242013966",
-
-                "242013827"
-
-            ]:
-
-                pagina_pdf = 1
-
-
-            pagina = pdf[pagina_pdf]
-
-
-            x1,y1,x2,y2 = coordenadas[matricula]
-
-
-            rect = fitz.Rect(
-
-                x1,
-
-                y1,
-
-                x2,
-
-                y2
+                archivo_png
 
             )
-
-
-            pagina.insert_image(
-
-                rect,
-
-                filename=archivo_png,
-
-                keep_proportion=True
-
-            )
-
-
-            salida = f"Firmado_{matricula}.pdf"
-
-
-            pdf.save(
-
-                salida,
-
-                incremental=False,
-
-                encryption=0
-
-            )
-
-
-            pdf.close()
 
 
             st.success(
 
-                "✅ PDF firmado correctamente"
+                "Firma guardada"
 
             )
 
 
-            with open(
-
-                salida,
-
-                "rb"
-
-            ) as f:
+            #======================================
+            # ABRIR PDF FIRMADO
+            #======================================
 
 
-                st.download_button(
+            pdf = fitz.open(
 
-                    "⬇️ Descargar PDF firmado",
+                PDF_FIRMADO
 
-                    f,
+            )
 
-                    file_name=salida,
 
-                    mime="application/pdf"
+            encontrado = False
+
+
+            for i in range(
+
+                len(pdf)
+
+            ):
+
+
+                pagina = pdf[i]
+
+
+                # Buscar matrícula
+
+                resultados = pagina.search_for(
+
+                    matricula
 
                 )
+
+
+                if len(resultados)>0:
+
+
+                    r = resultados[0]
+
+
+                    #--------------------------------
+
+                    # A la derecha del nombre
+
+                    #--------------------------------
+
+
+                    x1 = r.x1 + 280
+
+                    y1 = r.y0 - 3
+
+                    x2 = x1 + 80
+
+                    y2 = y1 + 25
+
+
+                    rect = fitz.Rect(
+
+                        x1,
+
+                        y1,
+
+                        x2,
+
+                        y2
+
+                    )
+
+
+                    # DIBUJAR RECTÁNGULO ROJO
+
+                    pagina.draw_rect(
+
+                        rect,
+
+                        color=(1,0,0),
+
+                        width=1
+
+                    )
+
+
+                    pagina.insert_image(
+
+                        rect,
+
+                        filename=archivo_png,
+
+                        keep_proportion=True
+
+                    )
+
+
+                    encontrado = True
+
+
+                    break
+
+
+
+            if encontrado:
+
+
+                pdf.save(
+
+                    PDF_FIRMADO,
+
+                    incremental=True,
+
+                    encryption=0
+
+                )
+
+
+                pdf.close()
+
+
+                st.success(
+
+                    "✅ Firma agregada al PDF"
+
+                )
+
+
+                with open(
+
+                    PDF_FIRMADO,
+
+                    "rb"
+
+                ) as f:
+
+
+                    st.download_button(
+
+                        "⬇️ Descargar PDF actualizado",
+
+                        f,
+
+                        file_name=PDF_FIRMADO,
+
+                        mime="application/pdf"
+
+                    )
+
+
+            else:
+
+
+                st.error(
+
+                    "No se encontró la matrícula en el PDF"
+
+                )                
