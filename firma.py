@@ -17,7 +17,7 @@ import os
 
 PDF_ORIGINAL = "406.pdf"
 
-PDF_FIRMADO = "Calificaciones_Coooooon_firma.pdf"
+PDF_FIRMADO = "Calificaciones_Cooooooon_firma.pdf"
 
 
 st.set_page_config(
@@ -236,7 +236,7 @@ if seleccion != "":
 
                     y1 = r.y0 - 5
 
-                    x2 = x1 + 60
+                    x2 = x1 + 55
 
                     y2 = y1 + 20
 
