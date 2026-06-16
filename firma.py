@@ -239,9 +239,9 @@ if seleccion != "":
 
                     y1 = r.y0 - 9
 
-                    x2 = x1 + 70
+                    x2 = x1 + 65
 
-                    y2 = y1 + 30
+                    y2 = y1 + 25
 
 
                     rect = fitz.Rect(
