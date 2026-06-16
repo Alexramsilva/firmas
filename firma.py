@@ -241,7 +241,7 @@ if seleccion != "":
 
                     x2 = x1 + 65
 
-                    y2 = y1 + 25
+                    y2 = y1 + 22
 
 
                     rect = fitz.Rect(
