@@ -235,13 +235,13 @@ if seleccion != "":
                     #--------------------------------
 
 
-                    x1 = r.x1 + 380
+                    x1 = r.x1 + 340
 
-                    y1 = r.y0 - 3
+                    y1 = r.y0 - 5
 
-                    x2 = x1 + 180
+                    x2 = x1 + 100
 
-                    y2 = y1 + 25
+                    y2 = y1 + 30
 
 
                     rect = fitz.Rect(
@@ -259,15 +259,15 @@ if seleccion != "":
 
                     # DIBUJAR RECTÁNGULO ROJO
 
-                    pagina.draw_rect(
+#                    pagina.draw_rect(
 
-                        rect,
+#                        rect,
 
-                        color=(1,0,0),
+#                        color=(1,0,0),
 
-                        width=1
+#                        width=1
 
-                    )
+#                    )
 
 
                     pagina.insert_image(
