@@ -9,159 +9,67 @@ Original file is located at
 
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas
-
 from PIL import Image
 import numpy as np
-import fitz
 import io
-import os
 
 # ======================================================
 # CONFIGURACIÓN
 # ======================================================
 
-PDF_ORIGINAL = "406-COY.pdf"
-PDF_FIRMADO = "Calificaciones_Firmadas.pdf"
-
 st.set_page_config(
-    page_title="Firma del Profesor",
-    layout="wide"
+    page_title="Firma Digital",
+    layout="centered"
 )
 
-st.title("Firma del Profesor")
+st.title("✍️ Firma Digital")
 
-# ======================================================
-# ABRIR PDF
-# ======================================================
+st.write("Firme dentro del recuadro.")
 
-pdf = fitz.open(PDF_ORIGINAL)
-
-page = pdf[0]
-
-zoom = 2
-
-mat = fitz.Matrix(zoom, zoom)
-
-pix = page.get_pixmap(matrix=mat)
-
-# img = Image.open(io.BytesIO(pix.tobytes("png")))
-
-img = Image.frombytes(
-    "RGB",
-    [pix.width, pix.height],
-    pix.samples
-)
 # ======================================================
 # CANVAS
 # ======================================================
 
-st.write("Firme sobre la primera hoja.")
-
 canvas_result = st_canvas(
-
     fill_color="rgba(255,255,255,0)",
-
     stroke_width=3,
-
-    stroke_color="#000000",
-
-    background_image=img,
-
-    update_streamlit=True,
-
-    height=img.height,
-
-    width=img.width,
-
+    stroke_color="#0057FF",       # Azul
+    background_color="#FFFFFF",   # Fondo blanco
+    height=250,
+    width=700,
     drawing_mode="freedraw",
-
-    key="canvas"
-
+    key="firma",
 )
 
 # ======================================================
-# BOTÓN
+# GUARDAR FIRMA
 # ======================================================
 
-if st.button("Guardar PDF firmado"):
+if canvas_result.image_data is not None:
 
-    if canvas_result.image_data is None:
+    img = canvas_result.image_data.astype(np.uint8)
 
-        st.error("No se detectó ninguna firma.")
+    # Convertir a PIL
+    firma = Image.fromarray(img)
 
-    else:
+    # Crear fondo blanco
+    fondo = Image.new("RGB", firma.size, (255, 255, 255))
 
-        # -----------------------------------------
-        # Convertir imagen del canvas
-        # -----------------------------------------
+    # Pegar la firma sobre el fondo blanco
+    fondo.paste(firma, mask=firma.split()[3])
 
-        firma = Image.fromarray(
-            canvas_result.image_data.astype(np.uint8)
-        )
+    st.subheader("Vista previa")
 
-        firma_path = "firma_temp.png"
+    st.image(fondo)
 
-        firma.save(firma_path)
+    # Guardar en memoria
+    buffer = io.BytesIO()
+    fondo.save(buffer, format="PNG")
+    buffer.seek(0)
 
-        # -----------------------------------------
-        # Reabrir PDF original
-        # -----------------------------------------
-
-        pdf = fitz.open(PDF_ORIGINAL)
-
-        page = pdf[0]
-
-        # =========================================
-        # POSICIÓN DE LA FIRMA
-        # Ajustar estas coordenadas si es necesario
-        # =========================================
-
-        rect = fitz.Rect(
-
-            430,   # izquierda
-
-            70,    # arriba
-
-            560,   # derecha
-
-            145    # abajo
-
-        )
-
-        page.insert_image(
-
-            rect,
-
-            filename=firma_path,
-
-            overlay=True
-
-        )
-
-        pdf.save(
-
-            PDF_FIRMADO,
-
-            deflate=True
-
-        )
-
-        pdf.close()
-
-        os.remove(firma_path)
-
-        st.success("PDF firmado correctamente.")
-
-        with open(PDF_FIRMADO, "rb") as file:
-
-            st.download_button(
-
-                "📄 Descargar PDF firmado",
-
-                file,
-
-                file_name=PDF_FIRMADO,
-
-                mime="application/pdf"
-
-            )
+    st.download_button(
+        "💾 Descargar Firma PNG",
+        data=buffer,
+        file_name="firma.png",
+        mime="image/png",
+    )
