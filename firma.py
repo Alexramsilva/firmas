@@ -44,8 +44,13 @@ mat = fitz.Matrix(zoom, zoom)
 
 pix = page.get_pixmap(matrix=mat)
 
-img = Image.open(io.BytesIO(pix.tobytes("png")))
+# img = Image.open(io.BytesIO(pix.tobytes("png")))
 
+img = Image.frombytes(
+    "RGB",
+    [pix.width, pix.height],
+    pix.samples
+)
 # ======================================================
 # CANVAS
 # ======================================================
