@@ -1,6 +1,5 @@
-streamlit
-streamlit-drawable-canvas
-PyMuPDF
-Pillow
-numpy
-openai
+streamlit==1.39.0
+streamlit-drawable-canvas==0.9.3
+PyMuPDF==1.26.3
+Pillow>=10.0
+numpy>=1.26
